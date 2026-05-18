@@ -95,6 +95,17 @@ function startServer() {
       onlineUsers.set(userId, socket.id);
       console.log("User registered:", userId);
     });
+    socket.on(
+  "notification",
+  (data) => {
+
+    console.log(`
+Notification Received
+`);
+
+    console.log(data);
+  }
+);
 
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);

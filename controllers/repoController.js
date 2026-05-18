@@ -214,10 +214,45 @@ const onlineUsers = req.app.get("onlineUsers");
 const repoOwnerId = repository.owner.toString();
 const socketId = onlineUsers.get(repoOwnerId);
 
+const notificationData = {
+
+  message:
+    "Someone starred your repository",
+
+  repository:
+    repository.name,
+
+  starredBy:
+    userId,
+
+};
+
+console.log(`
+==================================
+REALTIME SOCKET EVENT TRIGGERED
+==================================
+
+Repository : ${repository.name}
+
+Starred By : ${userId}
+
+Socket ID : ${socketId || "No active socket"}
+
+==================================
+`);
+
+console.log(
+  "Notification Data:",
+  notificationData
+);
+
+// Emit only if socket exists
 if (socketId) {
-  io.to(socketId).emit("notification", {
-    message: "Someone starred your repository",
-  });
+
+  io.to(socketId).emit(
+    "notification",
+    notificationData
+  );
 }
 
 
